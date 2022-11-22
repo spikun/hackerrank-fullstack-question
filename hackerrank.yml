@@ -1,10 +1,10 @@
 version: 1.0
 configuration:
   has_webserver: true
-  scoring:
-    command: "cd JavaSpringBootSample; mvn clean test"
-    files:
-      - "JavaSpringBootSample/target/customReports/result.xml"
+  # scoring:
+  #   command: "cd JavaSpringBootSample; mvn clean test"
+  #   files:
+  #     - "JavaSpringBootSample/target/customReports/result.xml"
     # Define hidden test cases and declare file paths below to evaluate candidates' submissions.
     #
     # Learn more:
