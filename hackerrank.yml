@@ -18,6 +18,9 @@ configuration:
       - JavaSpringBootSample/src/main/java/com/hackerrank/sample/controller/ModelController.java
       - JavaSpringBootSample/src/main/java/com/hackerrank/sample/model/Model.java
     project_menu:
+      # run: "cd JavaSpringBootSample; mvn clean spring-boot:run"
+      # install: "cd ..; cd JavaSpringBootSample; mvn clean install"
+      # test: "cd JavaSpringBootSample; mvn clean test; cat target/customReports/result.txt"
       run: "cd AngularSample; npm start; cd ..; cd JavaSpringBootSample; mvn clean spring-boot:run"
       install: "cd AngularSample; npm install --silent; cd ..; cd JavaSpringBootSample; mvn clean install"
-      test: ""cd AngularSample; npm test; cd ..; cd JavaSpringBootSample; mvn clean test; cat target/customReports/result.txt"
+      test: "cd AngularSample; npm test; cd ..; cd JavaSpringBootSample; mvn clean test; cat target/customReports/result.txt"
