@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
-import javafx.util.Pair;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -35,6 +34,7 @@ import org.junit.runners.model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -349,7 +349,7 @@ public class HttpJsonDynamicUnitTest {
     private boolean validateStatusCode(String filename, String testcase, String expected, String found) {
         if (!expected.equals(found)) {
             String reason = "Status code";
-            addTestFailure(filename, new Pair(new Pair(testcase, reason), new Pair(expected, found)));
+            addTestFailure(filename, Pair.of(Pair.of(testcase, reason), Pair.of(expected, found)));
 
             return false;
         }
@@ -360,7 +360,7 @@ public class HttpJsonDynamicUnitTest {
     private boolean validateContentType(String filename, String testcase, String expected, String found) {
         if (!found.startsWith(expected)) {
             String reason = "Content type";
-            addTestFailure(filename, new Pair(new Pair(testcase, reason), new Pair(expected, found)));
+            addTestFailure(filename, Pair.of(Pair.of(testcase, reason), Pair.of(expected, found)));
 
             return false;
         }
@@ -371,7 +371,7 @@ public class HttpJsonDynamicUnitTest {
     private boolean validateTextResponse(String filename, String testcase, String expected, String found) {
         if (!expected.equals(found)) {
             String reason = "Response text does not match with the expected response";
-            addTestFailure(filename, new Pair(new Pair(testcase, reason), new Pair(expected, found)));
+            addTestFailure(filename, Pair.of(Pair.of(testcase, reason), Pair.of(expected, found)));
 
             return false;
         }
@@ -389,8 +389,8 @@ public class HttpJsonDynamicUnitTest {
 
             if (expectedResponseJsonList.size() != responseBodyJsonList.size()) {
                 String reason = "Response Json array size does not match with the expected array size";
-                addTestFailure(filename, new Pair(new Pair(testcase, reason),
-                        new Pair(String.valueOf(expectedResponseJsonList.size()),
+                addTestFailure(filename, Pair.of(Pair.of(testcase, reason),
+                        Pair.of(String.valueOf(expectedResponseJsonList.size()),
                                 String.valueOf(responseBodyJsonList.size()))));
 
                 return false;
@@ -401,7 +401,7 @@ public class HttpJsonDynamicUnitTest {
 
                     if (!expectedJson.equals(foundJson)) {
                         String reason = String.format("Response Json (at index %d) does not match with the expected Json", i);
-                        addTestFailure(filename, new Pair(new Pair(testcase, reason), new Pair(expectedJson.toString(),
+                        addTestFailure(filename, Pair.of(Pair.of(testcase, reason), Pair.of(expectedJson.toString(),
                                 foundJson.toString())));
 
                         return false;
@@ -411,7 +411,7 @@ public class HttpJsonDynamicUnitTest {
         } catch (IOException ex) {
             if (!expected.equals(found)) {
                 String reason = "Response Json does not match with the expected Json";
-                addTestFailure(filename, new Pair(new Pair(testcase, reason), new Pair(expected.toString(),
+                addTestFailure(filename, Pair.of(Pair.of(testcase, reason), Pair.of(expected.toString(),
                         found.toString())));
 
                 return false;
@@ -525,14 +525,14 @@ public class HttpJsonDynamicUnitTest {
                         .forEachOrdered(filename -> {
                             Pair<Pair<String, String>, Pair<String, String>> report = testFailures.get(filename);
 
-                            String testcase = report.getKey()
-                                    .getKey();
-                            String reason = report.getKey()
-                                    .getValue();
-                            String expected = report.getValue()
-                                    .getKey();
-                            String found = report.getValue()
-                                    .getValue();
+                            String testcase = report.getFirst()
+                                    .getFirst();
+                            String reason = report.getFirst()
+                                    .getSecond();
+                            String expected = report.getSecond()
+                                    .getFirst();
+                            String found = report.getSecond()
+                                    .getSecond();
 
                             fileFailureReason.put(filename, reason);
 
@@ -585,8 +585,8 @@ public class HttpJsonDynamicUnitTest {
                                         executionTime.get(filename) / 1000.0f));
                             } else {
                                 Pair<Pair<String, String>, Pair<String, String>> report = testFailures.get(filename);
-                                String reason = report.getKey()
-                                        .getValue();
+                                String reason = report.getFirst()
+                                        .getSecond();
 
                                 writer.write(String.format("    <testcase name=\"%s\" classname=\"%s\" time=\"%f\">\n"
                                         + "        <failure>\n            " + reason + "\n        </failure>\n    </testcase>\n",
