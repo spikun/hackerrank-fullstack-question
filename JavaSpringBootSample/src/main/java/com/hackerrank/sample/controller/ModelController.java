@@ -20,7 +20,7 @@ public class ModelController {
 
     @RequestMapping(value = "/model", method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createNewModel(@RequestBody @Valid Model model) {
+    public void createNewModel(@RequestBody Model model) {
         modelService.createModel(model);
     }
 

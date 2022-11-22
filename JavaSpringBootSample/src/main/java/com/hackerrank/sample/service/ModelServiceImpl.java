@@ -26,7 +26,7 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public void createModel(Model model) {
         modelRepository.findById(model.getId())
-            .orElseThrow(() -> new BadResourceRequestException("Model with same id exists."));
+            .ifPresent(i -> new BadResourceRequestException("Model with same id exists."));
 
         modelRepository.save(model);
     }
